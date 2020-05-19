@@ -30,9 +30,4 @@ async def roll(dice : str):
     await bot.say(result)
 
 
-@bot.command()
-async def hello(ctx):
-    await ctx.send('pong')
-
-
 bot.run(token)
