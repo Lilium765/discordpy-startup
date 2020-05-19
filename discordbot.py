@@ -23,7 +23,7 @@ async def roll(dice : str):
     try:
         rolls, limit = map(int, dice.split('d'))
     except Exception:
-        await bot.say('NdN形式（N回、N面ダイス）で書いてね、お兄ちゃん。')
+        await bot.say('NdN形式 N回、N面ダイスで書いてね、お兄ちゃん。')
         return
 
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
