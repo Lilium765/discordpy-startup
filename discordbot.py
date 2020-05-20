@@ -5,8 +5,6 @@ import random
 import discord
 import nDnDICE
 
-client = discord.Client()
-
 bot = commands.Bot(command_prefix='*')
 token = os.environ['DISCORD_BOT_TOKEN']
 
@@ -14,12 +12,12 @@ token = os.environ['DISCORD_BOT_TOKEN']
 async def hello(ctx):
     await ctx.send('こんにちは、お兄ちゃん。')
 	
-@client.event
-async def on_message(message):
-    msg = message.content
+@bot.event
+async def on_message(ctx):
+    msg = ctx.content
     result = nDnDICE.nDn(msg)
     if result is not None:
-        await client.send_message(message.channel, result)
+        await client.send_message(ctx.channel, result)
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -28,4 +26,3 @@ async def on_command_error(ctx, error):
     await ctx.send('お兄ちゃん、それはわからないよ。')
 
 bot.run(token)
-client.run(token)
