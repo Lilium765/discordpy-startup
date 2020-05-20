@@ -2,6 +2,10 @@ from discord.ext import commands
 import os
 import traceback
 import random
+import discord
+import nDnDICE
+
+client = discord.Client()
 
 bot = commands.Bot(command_prefix='*')
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -10,17 +14,12 @@ token = os.environ['DISCORD_BOT_TOKEN']
 async def hello(ctx):
     await ctx.send('こんにちは、お兄ちゃん。')
 	
-@bot.command()
-async def roll(dice : str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await bot.say('NdN形式 N回、N面ダイスで書いてね、お兄ちゃん。')
-        return
-
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await bot.say(result)
+@client.event
+async def on_message(message):
+    msg = message.content
+    result = nDnDICE.nDn(msg)
+    if result is not None:
+        await client.send_message(message.channel, result)
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -29,3 +28,4 @@ async def on_command_error(ctx, error):
     await ctx.send('お兄ちゃん、それはわからないよ。')
 
 bot.run(token)
+client.run(token)
